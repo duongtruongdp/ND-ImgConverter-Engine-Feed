@@ -1,15 +1,15 @@
 {
   "schemaVersion": 2,
   "channel": "staging",
-  "manifestRevision": 1,
-  "publishedAt": 1795337735,
-  "expiresAt": 1795942535,
-  "generatedAt": "2026-11-22T08:55:35Z",
+  "manifestRevision": 2,
+  "publishedAt": 1795344948,
+  "expiresAt": 1795949748,
+  "generatedAt": "2026-11-22T10:55:48Z",
   "publisher": "ND Image Converter staging release team",
   "signature": {
     "algorithm": "ed25519",
     "keyId": "nd-media-staging-1",
-    "value": "WDVJt4ANHBd3QtRLXLQjUHXVAuo62Okg7z5TydztbIga2plANkER5M0OZTMRE5Jg6/k5TTb6vL9yOBi+HS+PDw=="
+    "value": "eRXV5uvsWkR9TWtvo11NmAVDBAjFluW2PpMDIjuK2HePEZC9MIUDcaIi4aMlkerU4s3rlFQtHBM/AeOZo7COAw=="
   },
   "assets": [
     {
@@ -19,7 +19,7 @@
       "channel": "stable",
       "platform": "macos",
       "architecture": "universal",
-      "downloadUrl": "https://github.com/duongtruongdp/ND-ImgConverter-Engine-Feed/releases/download/engine-staging-2026.11.22.1/yt-dlp-2026.11.21.232659-macos-universal2",
+      "downloadUrl": "https://github.com/duongtruongdp/ND-ImgConverter-Engine-Feed/releases/download/engine-staging-2026.11.22.2/yt-dlp-2026.11.21.232659-macos-universal2",
       "sha256": "7a4debd6a4cc74e033964b00affab062c37da354b602819b156395ef2584f2f6",
       "sizeBytes": 37484192,
       "publisher": "yt-dlp nightly builds",
@@ -35,9 +35,9 @@
       "channel": "stable",
       "platform": "macos",
       "architecture": "arm64",
-      "downloadUrl": "https://github.com/duongtruongdp/ND-ImgConverter-Engine-Feed/releases/download/engine-staging-2026.11.22.1/gallery-dl-1.32.21-macos-arm64",
-      "sha256": "7247544b95f796c851bbd2b265f7d83dc58d24e32e7dd8568e83fb44321d66fc",
-      "sizeBytes": 10163696,
+      "downloadUrl": "https://github.com/duongtruongdp/ND-ImgConverter-Engine-Feed/releases/download/engine-staging-2026.11.22.2/gallery-dl-1.32.21-macos-arm64",
+      "sha256": "36bfe4f82541d81cb805acbf88d380bae0921a7c4ccb9dbfa455923402817326",
+      "sizeBytes": 14769600,
       "publisher": "gallery-dl official source + PyInstaller build",
       "minAppVersion": "0.9.1",
       "companions": [],
