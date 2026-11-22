@@ -65,7 +65,15 @@ jobs:
           python -m venv "$RUNNER_TEMP/gallery-venv"
           "$RUNNER_TEMP/gallery-venv/bin/python" -m pip install --require-hashes -r build/requirements-macos.lock
           source_dir="$source_root/gallery-dl"
-          "$RUNNER_TEMP/gallery-venv/bin/python" -m PyInstaller --noconfirm --clean --onefile --name gallery-dl --paths "$source_dir" --collect-submodules gallery_dl --collect-data gallery_dl --distpath "$RUNNER_TEMP/gallery-dist" --workpath "$RUNNER_TEMP/gallery-work" --specpath "$RUNNER_TEMP/gallery-spec" "$source_dir/gallery_dl/__main__.py"
+          hidden_imports=()
+          while IFS= read -r module_path; do
+            relative="${module_path#"$source_dir/"}"
+            module="${relative%.py}"
+            module="${module//\//.}"
+            module="${module%.__init__}"
+            hidden_imports+=(--hidden-import "$module")
+          done < <(find "$source_dir/gallery_dl" -type f -name '*.py' -print)
+          "$RUNNER_TEMP/gallery-venv/bin/python" -m PyInstaller --noconfirm --clean --onefile --name gallery-dl --paths "$source_dir" --collect-submodules gallery_dl --collect-data gallery_dl "${hidden_imports[@]}" --distpath "$RUNNER_TEMP/gallery-dist" --workpath "$RUNNER_TEMP/gallery-work" --specpath "$RUNNER_TEMP/gallery-spec" "$source_dir/gallery_dl/__main__.py"
           cp "$RUNNER_TEMP/gallery-dist/gallery-dl" "$out/gallery-dl-1.32.21-macos-x64"
           chmod +x "$out/gallery-dl-1.32.21-macos-x64"
           file "$out/yt-dlp-2026.11.21.232659-macos-x64" "$out/gallery-dl-1.32.21-macos-x64"
