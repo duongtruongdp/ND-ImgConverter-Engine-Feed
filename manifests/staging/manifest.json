@@ -1,15 +1,15 @@
 {
   "schemaVersion": 2,
   "channel": "staging",
-  "manifestRevision": 2,
-  "publishedAt": 1795344948,
-  "expiresAt": 1795949748,
-  "generatedAt": "2026-11-22T10:55:48Z",
+  "manifestRevision": 3,
+  "publishedAt": 1795346175,
+  "expiresAt": 1795950975,
+  "generatedAt": "2026-11-22T11:16:15Z",
   "publisher": "ND Image Converter staging release team",
   "signature": {
     "algorithm": "ed25519",
     "keyId": "nd-media-staging-1",
-    "value": "eRXV5uvsWkR9TWtvo11NmAVDBAjFluW2PpMDIjuK2HePEZC9MIUDcaIi4aMlkerU4s3rlFQtHBM/AeOZo7COAw=="
+    "value": "XBVpmq1qTic/85h0Vh+RHhY9C2piqQDzNQQpVGjr6ixHhUZvrYeUET4h/ubhUf4EkDZLuKpjqBzLp1DGYoLDCQ=="
   },
   "assets": [
     {
@@ -19,7 +19,7 @@
       "channel": "stable",
       "platform": "macos",
       "architecture": "universal",
-      "downloadUrl": "https://github.com/duongtruongdp/ND-ImgConverter-Engine-Feed/releases/download/engine-staging-2026.11.22.2/yt-dlp-2026.11.21.232659-macos-universal2",
+      "downloadUrl": "https://github.com/duongtruongdp/ND-ImgConverter-Engine-Feed/releases/download/engine-staging-2026.11.22.3/yt-dlp-2026.11.21.232659-macos-universal2",
       "sha256": "7a4debd6a4cc74e033964b00affab062c37da354b602819b156395ef2584f2f6",
       "sizeBytes": 37484192,
       "publisher": "yt-dlp nightly builds",
@@ -35,7 +35,7 @@
       "channel": "stable",
       "platform": "macos",
       "architecture": "arm64",
-      "downloadUrl": "https://github.com/duongtruongdp/ND-ImgConverter-Engine-Feed/releases/download/engine-staging-2026.11.22.2/gallery-dl-1.32.21-macos-arm64",
+      "downloadUrl": "https://github.com/duongtruongdp/ND-ImgConverter-Engine-Feed/releases/download/engine-staging-2026.11.22.3/gallery-dl-1.32.21-macos-arm64",
       "sha256": "36bfe4f82541d81cb805acbf88d380bae0921a7c4ccb9dbfa455923402817326",
       "sizeBytes": 14769600,
       "publisher": "gallery-dl official source + PyInstaller build",
@@ -43,6 +43,70 @@
       "companions": [],
       "license": "GPL-2.0-only",
       "fileName": "gallery-dl"
+    },
+    {
+      "engine": "yt-dlp",
+      "packageId": "yt-dlp",
+      "version": "2026.11.21.232659",
+      "channel": "stable",
+      "platform": "macos",
+      "architecture": "x86_64",
+      "downloadUrl": "https://github.com/duongtruongdp/ND-ImgConverter-Engine-Feed/releases/download/engine-staging-2026.11.22.3/yt-dlp-2026.11.21.232659-macos-x64",
+      "sha256": "7a4debd6a4cc74e033964b00affab062c37da354b602819b156395ef2584f2f6",
+      "sizeBytes": 37484192,
+      "publisher": "yt-dlp nightly builds",
+      "minAppVersion": "0.9.1",
+      "companions": [],
+      "license": "Unlicense",
+      "fileName": "yt-dlp"
+    },
+    {
+      "engine": "gallery-dl",
+      "packageId": "gallery-dl",
+      "version": "1.32.21",
+      "channel": "stable",
+      "platform": "macos",
+      "architecture": "x86_64",
+      "downloadUrl": "https://github.com/duongtruongdp/ND-ImgConverter-Engine-Feed/releases/download/engine-staging-2026.11.22.3/gallery-dl-1.32.21-macos-x64",
+      "sha256": "230cc29d95620423ad95e951b80380da3850f74ee3c22b6439dffb5a35afa145",
+      "sizeBytes": 16219776,
+      "publisher": "gallery-dl official source + PyInstaller build",
+      "minAppVersion": "0.9.1",
+      "companions": [],
+      "license": "GPL-2.0-only",
+      "fileName": "gallery-dl"
+    },
+    {
+      "engine": "yt-dlp",
+      "packageId": "yt-dlp",
+      "version": "2026.11.21.232659",
+      "channel": "stable",
+      "platform": "windows",
+      "architecture": "x86_64",
+      "downloadUrl": "https://github.com/duongtruongdp/ND-ImgConverter-Engine-Feed/releases/download/engine-staging-2026.11.22.3/yt-dlp-2026.11.21.232659-windows-x64.exe",
+      "sha256": "937b1024a937f0f2b50f6ef85f700383ecc0c96675aba3095801c5a1384cacd1",
+      "sizeBytes": 23632844,
+      "publisher": "yt-dlp nightly builds",
+      "minAppVersion": "0.9.1",
+      "companions": [],
+      "license": "Unlicense",
+      "fileName": "yt-dlp.exe"
+    },
+    {
+      "engine": "gallery-dl",
+      "packageId": "gallery-dl",
+      "version": "1.32.21",
+      "channel": "stable",
+      "platform": "windows",
+      "architecture": "x86_64",
+      "downloadUrl": "https://github.com/duongtruongdp/ND-ImgConverter-Engine-Feed/releases/download/engine-staging-2026.11.22.3/gallery-dl-1.32.21-windows-x64.exe",
+      "sha256": "310018a5d4581a217419e30e1a55fec4b15552687efe4d3411a0bb42a4add8ae",
+      "sizeBytes": 22660844,
+      "publisher": "gallery-dl official Windows release",
+      "minAppVersion": "0.9.1",
+      "companions": [],
+      "license": "GPL-2.0-only",
+      "fileName": "gallery-dl.exe"
     }
   ]
 }
