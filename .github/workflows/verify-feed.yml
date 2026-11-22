@@ -1,0 +1,33 @@
+name: Verify Public Engine Feed
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'manifests/**'
+      - 'docs/**'
+      - '.github/workflows/verify-feed.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate staging manifest shape
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const path = 'manifests/staging/manifest.json';
+          if (!fs.existsSync(path)) process.exit(0);
+          const m = JSON.parse(fs.readFileSync(path, 'utf8'));
+          if (m.schemaVersion !== 2 || m.channel !== 'staging' || !Number.isInteger(m.manifestRevision) || !m.signature?.value) process.exit(1);
+          if (!Array.isArray(m.assets) || m.assets.length === 0) process.exit(1);
+          for (const a of m.assets) {
+            if (!a.engine || !a.version || !a.fileName || !/^https:\/\//.test(a.downloadUrl) || !/^[a-f0-9]{64}$/i.test(a.sha256) || !(a.sizeBytes > 0)) process.exit(1);
+          }
+          console.log(`validated staging revision ${m.manifestRevision} with ${m.assets.length} assets`);
+          NODE
