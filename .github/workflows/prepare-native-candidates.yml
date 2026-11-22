@@ -1,0 +1,83 @@
+name: Prepare Native Engine Candidates
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: macos-x64
+            runner: macos-15-intel
+          - id: windows-x64
+            runner: windows-latest
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - name: Checkout feed metadata
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        if: matrix.id == 'macos-x64'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.15'
+
+      - name: Prepare Windows candidates
+        if: matrix.id == 'windows-x64'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $out = Join-Path $env:RUNNER_TEMP 'engine-candidates'
+          New-Item -ItemType Directory -Force $out | Out-Null
+          $ytdlp = Join-Path $out 'yt-dlp-2026.11.21.232659-windows-x64.exe'
+          $gallery = Join-Path $out 'gallery-dl-1.32.21-windows-x64.exe'
+          Invoke-WebRequest -Uri 'https://github.com/yt-dlp/yt-dlp-nightly-builds/releases/download/2026.11.21.232659/yt-dlp.exe' -OutFile $ytdlp
+          Invoke-WebRequest -Uri 'https://codeberg.org/mikf/gallery-dl/releases/download/v1.32.21/gallery-dl.exe' -OutFile $gallery
+          if ((Get-FileHash $ytdlp -Algorithm SHA256).Hash.ToLower() -ne '937b1024a937f0f2b50f6ef85f700383ecc0c96675aba3095801c5a1384cacd1') { throw 'yt-dlp checksum mismatch' }
+          if ((Get-FileHash $gallery -Algorithm SHA256).Hash.ToLower() -ne '310018a5d4581a217419e30e1a55fec4b15552687efe4d3411a0bb42a4add8ae') { throw 'gallery-dl checksum mismatch' }
+          foreach ($binary in @($ytdlp, $gallery)) {
+            $bytes = [System.IO.File]::ReadAllBytes($binary)
+            if ($bytes.Length -lt 2 -or $bytes[0] -ne 0x4d -or $bytes[1] -ne 0x5a) { throw "Not a PE executable: $binary" }
+          }
+          & $ytdlp --version
+          & $gallery --version
+          Get-FileHash $ytdlp, $gallery -Algorithm SHA256 | ConvertTo-Json | Out-File (Join-Path $out 'metadata.json')
+
+      - name: Prepare macOS Intel candidates
+        if: matrix.id == 'macos-x64'
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/engine-candidates"
+          source_root="$RUNNER_TEMP/gallery-source"
+          mkdir -p "$out" "$source_root"
+          curl -L --fail --retry 3 -o "$out/yt-dlp-2026.11.21.232659-macos-x64" 'https://github.com/yt-dlp/yt-dlp-nightly-builds/releases/download/2026.11.21.232659/yt-dlp_macos'
+          echo '7a4debd6a4cc74e033964b00affab062c37da354b602819b156395ef2584f2f6  '"$out/yt-dlp-2026.11.21.232659-macos-x64" | shasum -a 256 -c -
+          chmod +x "$out/yt-dlp-2026.11.21.232659-macos-x64"
+          curl -L --fail --retry 3 -o "$source_root/gallery-dl-1.32.21.tar.gz" 'https://codeberg.org/mikf/gallery-dl/archive/v1.32.21.tar.gz'
+          echo 'deb133d1e3c5d0c9293fbdbfdd23ffd1f475850ac8e33649d1f274334c7652b6  '"$source_root/gallery-dl-1.32.21.tar.gz" | shasum -a 256 -c -
+          tar -xzf "$source_root/gallery-dl-1.32.21.tar.gz" -C "$source_root"
+          python -m venv "$RUNNER_TEMP/gallery-venv"
+          "$RUNNER_TEMP/gallery-venv/bin/python" -m pip install --require-hashes -r build/requirements-macos.lock
+          source_dir="$source_root/gallery-dl"
+          "$RUNNER_TEMP/gallery-venv/bin/python" -m PyInstaller --noconfirm --clean --onefile --name gallery-dl --paths "$source_dir" --collect-submodules gallery_dl --collect-data gallery_dl --distpath "$RUNNER_TEMP/gallery-dist" --workpath "$RUNNER_TEMP/gallery-work" --specpath "$RUNNER_TEMP/gallery-spec" "$source_dir/gallery_dl/__main__.py"
+          cp "$RUNNER_TEMP/gallery-dist/gallery-dl" "$out/gallery-dl-1.32.21-macos-x64"
+          chmod +x "$out/gallery-dl-1.32.21-macos-x64"
+          file "$out/yt-dlp-2026.11.21.232659-macos-x64" "$out/gallery-dl-1.32.21-macos-x64"
+          "$out/yt-dlp-2026.11.21.232659-macos-x64" --version
+          "$out/gallery-dl-1.32.21-macos-x64" --version
+          "$out/gallery-dl-1.32.21-macos-x64" --no-input --destination "$RUNNER_TEMP/gallery-smoke" 'https://www.python.org/static/community_logos/python-logo.png'
+          shasum -a 256 "$out"/* > "$out/SHA256SUMS.txt"
+
+      - name: Upload native candidates
+        uses: actions/upload-artifact@v4
+        with:
+          name: engine-candidates-${{ matrix.id }}
+          path: ${{ runner.temp }}/engine-candidates
+          if-no-files-found: error
+          retention-days: 7
