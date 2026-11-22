@@ -5,7 +5,7 @@ immutable, non-sensitive release assets for ND Image Converter.
 
 It is not a production update channel. The staging manifest is available at:
 
-`https://raw.githubusercontent.com/duongtruongdp/ND-ImgConverter-Engine-Feed/main/manifests/staging/manifest.json`
+`https://github.com/duongtruongdp/ND-ImgConverter-Engine-Feed/raw/refs/heads/main/manifests/staging/manifest.json`
 
 The application retrieves engine artifacts anonymously from immutable GitHub
 Release URLs. No GitHub login or token is required. Private signing material
